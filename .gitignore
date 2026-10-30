@@ -1,0 +1,11 @@
+# Build files
+build/
+cmake-build-*/
+
+# Compiled programs
+*.exe
+*.o
+*.out
+
+# IDE settings
+*.log
