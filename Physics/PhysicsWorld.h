@@ -18,6 +18,22 @@ public:
         bodies.push_back(body);
     }
 
+    int findBodyAt(Vector2 point)
+    {
+        for (int i = static_cast<int>(bodies.size()) - 1;
+            i >= 0; i--)
+        {
+            Vector2 difference =
+                point - bodies[i].position;
+
+            if (difference.length() <= bodies[i].radius)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 
     void applyGravity()
     {
@@ -34,6 +50,30 @@ public:
             }
         }
     }
+
+    void applyImpulse(Vector2 point)
+    {
+        for (auto& body : bodies)
+        {
+            if (body.isStatic)
+                continue;
+
+            Vector2 direction =
+                body.position - point;
+
+            float distance = direction.length();
+
+            if (distance < 150 && distance > 0.01f)
+            {
+                float strength = 
+                    (150 - distance) * 8.0f;
+
+                body.velocity +=
+                    direction.normalized() * strength;
+            }
+        }
+    }
+
     void handleBoundaries(RigidBody& body)
     {
         if (body.position.x - body.radius < 0)
